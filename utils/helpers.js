@@ -6,7 +6,7 @@ import {
 	MaterialIcons,
 	MaterialCommunityIcons
 } from "@expo/vector-icons";
-import { white, black } from "./colors";
+import { white, black, red } from "./colors";
 
 export function getMetricMetaInfo(metric) {
 	const info = {
@@ -21,7 +21,7 @@ export function getMetricMetaInfo(metric) {
 					<View>
 						<MaterialIcons
 							name="directions-run"
-							color={"black"}
+							color={black}
 							size={35}
 						/>
 					</View>
@@ -57,7 +57,7 @@ export function getMetricMetaInfo(metric) {
 					<View>
 						<MaterialCommunityIcons
 							name="swim"
-							color={white}
+							color={red}
 							size={35}
 						/>
 					</View>
@@ -73,7 +73,7 @@ export function getMetricMetaInfo(metric) {
 			getIcon() {
 				return (
 					<View>
-						<FontAwesome name="bed" color={white} size={30} />
+						<FontAwesome name="bed" color={red} size={30} />
 					</View>
 				);
 			}
@@ -89,7 +89,7 @@ export function getMetricMetaInfo(metric) {
 					<View>
 						<MaterialCommunityIcons
 							name="food"
-							color={white}
+							color={red}
 							size={35}
 						/>
 					</View>
