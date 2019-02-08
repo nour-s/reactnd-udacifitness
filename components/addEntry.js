@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { getMetricMetaInfo } from "../utils/helpers";
 import UdaciSlider from "./udaciSlider";
 import UdaciSteppers from "./udaciSteppers";
+import DateHeader from "./dateHeader";
 
 export default class AddEntry extends Component {
 	state = {
@@ -12,6 +13,7 @@ export default class AddEntry extends Component {
 		sleep: 0,
 		eat: 0
 	};
+
 	increment = metric => {
 		const { max, step } = getMetricMetaInfo(metric);
 
@@ -24,6 +26,7 @@ export default class AddEntry extends Component {
 			};
 		});
 	};
+
 	decrement = metric => {
 		this.setState(state => {
 			const count = state[metric] - getMetricMetaInfo(metric).step;
@@ -34,16 +37,19 @@ export default class AddEntry extends Component {
 			};
 		});
 	};
+
 	slide = (metric, value) => {
 		this.setState(() => ({
 			[metric]: value
 		}));
 	};
+
 	render() {
 		const metaInfo = getMetricMetaInfo();
 
 		return (
 			<View>
+				<DateHeader date={new Date().toLocaleDateString()} />
 				{Object.keys(metaInfo).map(key => {
 					const { getIcon, type, ...rest } = metaInfo[key];
 					const value = this.state[key];
