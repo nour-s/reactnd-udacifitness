@@ -6,119 +6,116 @@ import UdaciSteppers from "./UdaciSteppers";
 import DateHeader from "./DateHeader";
 import { Ionicons } from "@expo/vector-icons";
 import TextButton from "./TextButton";
+import { submitEntry, removeEntry } from "../utils/api";
 
 function SubmitBtn({ onPress }) {
-	return (
-		<TouchableOpacity onPress={onPress}>
-			<Text>SUBMIT</Text>
-		</TouchableOpacity>
-	);
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text>SUBMIT</Text>
+    </TouchableOpacity>
+  );
 }
 
 export default class AddEntry extends Component {
-	state = {
-		run: 0,
-		bike: 0,
-		swim: 0,
-		sleep: 0,
-		eat: 0
-	};
+  state = {
+    run: 0,
+    bike: 0,
+    swim: 0,
+    sleep: 0,
+    eat: 0
+  };
+  increment = metric => {
+    const { max, step } = getMetricMetaInfo(metric);
 
-	increment = metric => {
-		const { max, step } = getMetricMetaInfo(metric);
-		this.setState(state => {
-			const count = state[metric] + step;
-			return {
-				...state,
-				[metric]: count > max ? max : count
-			};
-		});
-	};
+    this.setState(state => {
+      const count = state[metric] + step;
 
-	decrement = metric => {
-		this.setState(state => {
-			const count = state[metric] - getMetricMetaInfo(metric).step;
+      return {
+        ...state,
+        [metric]: count > max ? max : count
+      };
+    });
+  };
+  decrement = metric => {
+    this.setState(state => {
+      const count = state[metric] - getMetricMetaInfo(metric).step;
 
-			return {
-				...state,
-				[metric]: count < 0 ? 0 : count
-			};
-		});
-	};
+      return {
+        ...state,
+        [metric]: count < 0 ? 0 : count
+      };
+    });
+  };
+  slide = (metric, value) => {
+    this.setState(() => ({
+      [metric]: value
+    }));
+  };
+  submit = () => {
+    const key = timeToString();
+    const entry = this.state;
 
-	slide = (metric, value) => {
-		this.setState(() => ({
-			[metric]: value
-		}));
-	};
+    // Update Redux
 
-	submit = () => {
-		const key = timeToString();
-		const entry = this.state;
+    this.setState(() => ({ run: 0, bike: 0, swim: 0, sleep: 0, eat: 0 }));
 
-		// Update Redux
-		this.setState(() => ({ run: 0, bike: 0, swim: 0, sleep: 0, eat: 0 }));
+    // Navigate to home
 
-		// Navigate to home
+    submitEntry({ key, entry });
 
-		// Save to "DB"
+    // Clear local notification
+  };
+  reset = () => {
+    const key = timeToString();
 
-		// Clear local notification
-	};
+    // Update Redux
 
-	reset = () => {
-		const key = timeToString();
+    // Route to Home
 
-		// Update Redux
+    removeEntry(key);
+  };
+  render() {
+    const metaInfo = getMetricMetaInfo();
 
-		// Route to Home
+    if (this.props.alreadyLogged) {
+      return (
+        <View>
+          <Ionicons name={"ios-happy-outline"} size={100} />
+          <Text>You already logged your information for today.</Text>
+          <TextButton onPress={this.reset}>Reset</TextButton>
+        </View>
+      );
+    }
 
-		// Update "DB"
-	};
+    return (
+      <View>
+        <DateHeader date={new Date().toLocaleDateString()} />
+        {Object.keys(metaInfo).map(key => {
+          const { getIcon, type, ...rest } = metaInfo[key];
+          const value = this.state[key];
 
-	render() {
-		const metaInfo = getMetricMetaInfo();
-
-		if (this.props.alreadyLogged) {
-			return (
-				<View>
-					<Ionicons name={"ios-happy"} size={100} />
-					<Text>You already logged your information for today.</Text>
-
-					<TextButton onPress={this.reset}>Reset</TextButton>
-				</View>
-			);
-		}
-
-		return (
-			<View>
-				<DateHeader date={new Date().toLocaleDateString()} />
-				{Object.keys(metaInfo).map(key => {
-					const { getIcon, type, ...rest } = metaInfo[key];
-					const value = this.state[key];
-
-					return (
-						<View key={key}>
-							{getIcon()}
-							{type === "slider" ? (
-								<UdaciSlider
-									value={value}
-									onChange={value => this.slide(key, value)}
-									{...rest}
-								/>
-							) : (
-								<UdaciSteppers
-									value={value}
-									onIncrement={() => this.increment(key)}
-									onDecrement={() => this.decrement(key)}
-									{...rest}
-								/>
-							)}
-						</View>
-					);
-				})}
-				<SubmitBtn onPress={this.submit} />
-			</View>
-		);
-	}
+          return (
+            <View key={key}>
+              {getIcon()}
+              {type === "slider" ? (
+                <UdaciSlider
+                  value={value}
+                  onChange={value => this.slide(key, value)}
+                  {...rest}
+                />
+              ) : (
+                <UdaciSteppers
+                  value={value}
+                  onIncrement={() => this.increment(key)}
+                  onDecrement={() => this.decrement(key)}
+                  {...rest}
+                />
+              )}
+            </View>
+          );
+        })}
+        <SubmitBtn onPress={this.submit} />
+      </View>
+    );
+  }
 }
