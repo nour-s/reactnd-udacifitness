@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { getMetricMetaInfo, timeToString } from "../utils/helpers";
-import UdaciSlider from "./UdaciSlider";
-import UdaciSteppers from "./UdaciSteppers";
-import DateHeader from "./DateHeader";
+import UdaciSlider from "./udaciSlider";
+import UdaciSteppers from "./udaciSteppers";
+import DateHeader from "./dateHeader";
 import { Ionicons } from "@expo/vector-icons";
-import TextButton from "./TextButton";
+import TextButton from "./textButton";
 import { submitEntry, removeEntry } from "../utils/api";
 
 function SubmitBtn({ onPress }) {
@@ -104,13 +104,13 @@ export default class AddEntry extends Component {
                   {...rest}
                 />
               ) : (
-                <UdaciSteppers
-                  value={value}
-                  onIncrement={() => this.increment(key)}
-                  onDecrement={() => this.decrement(key)}
-                  {...rest}
-                />
-              )}
+                  <UdaciSteppers
+                    value={value}
+                    onIncrement={() => this.increment(key)}
+                    onDecrement={() => this.decrement(key)}
+                    {...rest}
+                  />
+                )}
             </View>
           );
         })}
