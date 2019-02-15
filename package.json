@@ -1,4 +1,6 @@
 {
+  "name": "UdaciFitness",
+  "version": "0.1.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -9,7 +11,10 @@
   "dependencies": {
     "expo": "^32.0.5",
     "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
+    "udacifitness-calendar": "^11.0.0"
   },
   "devDependencies": {
     "expo-cli": "^2.10.1",
