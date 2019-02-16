@@ -14,6 +14,7 @@ import {
   createStackNavigator
 } from "react-navigation";
 import { Constants } from "expo";
+import Live from "./components/Live";
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
@@ -40,6 +41,15 @@ const Tabs = createBottomTabNavigator(
         tabBarLabel: "Add Entry",
         tabBarIcon: ({ tintColor }) => (
           <FontAwesome name="plus-square" size={30} color={tintColor} />
+        )
+      }
+    },
+    Live: {
+      screen: Live,
+      navigationOptions: {
+        tabBarLabel: "Live",
+        tabBarIcon: ({ tintColor }) => (
+          <Ionicons name="ios-speedometer" size={30} color={tintColor} />
         )
       }
     }
@@ -82,7 +92,7 @@ const MainNavigator = createStackNavigator({
       headerTintColor: white,
       headerStyle: {
         // The background color behind the 'back' arrow.
-        backgroundColor: 'purple'
+        backgroundColor: "purple"
       }
     })
   }
