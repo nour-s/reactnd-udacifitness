@@ -33,6 +33,7 @@ function SubmitBtn({ onPress }) {
     </TouchableOpacity>
   );
 }
+
 class AddEntry extends Component {
   state = {
     run: 0,
@@ -53,6 +54,7 @@ class AddEntry extends Component {
       };
     });
   };
+
   decrement = metric => {
     this.setState(state => {
       const count = state[metric] - getMetricMetaInfo(metric).step;
@@ -63,16 +65,19 @@ class AddEntry extends Component {
       };
     });
   };
+
   slide = (metric, value) => {
     this.setState(() => ({
       [metric]: value
     }));
   };
+
   submit = () => {
     const key = timeToString();
     const entry = this.state;
+    const { dispatch, goBack } = this.props;
 
-    this.props.dispatch(
+    dispatch(
       addEntry({
         [key]: entry
       })
@@ -81,11 +86,13 @@ class AddEntry extends Component {
     this.setState(() => ({ run: 0, bike: 0, swim: 0, sleep: 0, eat: 0 }));
 
     // Navigate to home
+    goBack();
 
     submitEntry({ key, entry });
 
     // Clear local notification
   };
+
   reset = () => {
     const key = timeToString();
 
@@ -96,9 +103,11 @@ class AddEntry extends Component {
     );
 
     // Route to Home
+    this.props.navigation.goBack();
 
     removeEntry(key);
   };
+
   render() {
     const metaInfo = getMetricMetaInfo();
 
@@ -202,4 +211,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AddEntry);
+function mapDispatchToProps(dispatch, { navigation }) {
+  return { dispatch, goBack: () => navigation.goBack() };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddEntry);
