@@ -20,6 +20,7 @@ class History extends Component {
   state = {
     ready: false
   };
+
   componentDidMount() {
     const { dispatch } = this.props;
 
@@ -36,6 +37,7 @@ class History extends Component {
       })
       .then(() => this.setState(() => ({ ready: true })));
   }
+
   renderItem = ({ today, ...metrics }, formattedDate, key) => (
     <View style={styles.item}>
       {today ? (
@@ -44,12 +46,17 @@ class History extends Component {
           <Text style={styles.noDataText}>{today}</Text>
         </View>
       ) : (
-        <TouchableOpacity onPress={() => console.log("Pressed!")}>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate("EntryDetail", { entryId: key })
+          }
+        >
           <MetricCard date={formattedDate} metrics={metrics} />
         </TouchableOpacity>
       )}
     </View>
   );
+
   renderEmptyDate(formattedDate) {
     return (
       <View style={styles.item}>
@@ -60,6 +67,7 @@ class History extends Component {
       </View>
     );
   }
+
   render() {
     const { entries } = this.props;
     const { ready } = this.state;

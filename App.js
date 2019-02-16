@@ -1,13 +1,18 @@
 import React from "react";
 import { View, Platform, StatusBar } from "react-native";
 import AddEntry from "./components/AddEntry";
+import EntryDetail from "./components/EntryDetail";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
 import History from "./components/History";
 import { purple, white } from "./utils/colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { createBottomTabNavigator, createAppContainer } from "react-navigation";
+import {
+  createBottomTabNavigator,
+  createAppContainer,
+  createStackNavigator
+} from "react-navigation";
 import { Constants } from "expo";
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
@@ -44,9 +49,11 @@ const Tabs = createBottomTabNavigator(
       header: null
     },
     tabBarOptions: {
+      // The color of the icon on the navigation bar.
       activeTintColor: Platform.OS === "ios" ? purple : white,
       style: {
         height: 56,
+        // The background behind the navigation icon
         backgroundColor: Platform.OS === "ios" ? white : purple,
         shadowColor: "rgba(0, 0, 0, 0.24)",
         shadowOffset: {
@@ -60,7 +67,28 @@ const Tabs = createBottomTabNavigator(
   }
 );
 
-const InnerApp = createAppContainer(Tabs);
+const MainNavigator = createStackNavigator({
+  // The order decides which one is the first shown.
+  Home: {
+    screen: Tabs,
+    navigationOptions: {
+      header: null
+    }
+  },
+  EntryDetail: {
+    screen: EntryDetail,
+    navigationOptions: ({ navigation }) => ({
+      // the color of the 'back' arrow.
+      headerTintColor: white,
+      headerStyle: {
+        // The background color behind the 'back' arrow.
+        backgroundColor: 'purple'
+      }
+    })
+  }
+});
+
+const InnerApp = createAppContainer(MainNavigator);
 
 export default class App extends React.Component {
   render() {
