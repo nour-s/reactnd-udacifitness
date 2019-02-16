@@ -3,7 +3,7 @@
 		"name": "UdaciFitness",
 		"slug": "udacfitness",
 		"description": "The best triathlon tracker ever",
-		"sdkVersion": "20.0.0",
+		"sdkVersion": "32.0.0",
 		"version": "1.0",
 		"orientation": "portrait",
 		"icon": "https://tylermcginnis.com/udacifitness-512.png",
