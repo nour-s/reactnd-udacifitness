@@ -95,15 +95,16 @@ class AddEntry extends Component {
 
   reset = () => {
     const key = timeToString();
+    const { dispatch, goBack } = this.props;
 
-    this.props.dispatch(
+    dispatch(
       addEntry({
         [key]: getDailyReminderValue()
       })
     );
 
     // Route to Home
-    this.props.navigation.goBack();
+    goBack();
 
     removeEntry(key);
   };
@@ -115,7 +116,7 @@ class AddEntry extends Component {
       return (
         <View style={styles.center}>
           <Ionicons
-            name={Platform.OS === "ios" ? "ios-happy" : "md-happy"}
+            name={Platform.OS === "ios" ? "ios-happy-outline" : "md-happy"}
             size={100}
           />
           <Text>You already logged your information for today.</Text>
