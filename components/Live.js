@@ -74,19 +74,7 @@ export default class Live extends Component {
       return <ActivityIndicator style={{ marginTop: 30 }} />;
     }
 
-    if (status === "denied") {
-      return (
-        <View style={styles.center}>
-          <Foundation name="alert" size={50} />
-          <Text>
-            You denied your location. You can fix this by visiting your settings
-            and enabling location services for this app.
-          </Text>
-        </View>
-      );
-    }
-
-    if (status === "undetermined") {
+    if (status === "undetermined" || status === "denied") {
       return (
         <View style={styles.center}>
           <Foundation name="alert" size={50} />
